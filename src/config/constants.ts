@@ -7,26 +7,10 @@ const constants = {
   JWT_PUBLIC_KEY: process.env.JWT_PUBLIC_KEY,
   JWT_USER_LOGIN_EXPIRATION: 2,
   
-  // Cloudinary
-  CLOUDINARY: {
-    NAME: process.env.CLOUDINARY_NAME,
-    API_KEY: process.env.CLOUDINARY_API_KEY,
-    SECRET_KEY: process.env.CLOUDINARY_SECRET_KEY,
-  },
-  
-  //Redis Configuration
-  REDIS_CONFIGURATION: {
-    REDIS_PORT: Number(process.env.REDIS_PORT),
-    REDIS_HOST: process.env.REDIS_HOST,
-    REDIS_URL: process.env.REDIS_URL,
-    REDIS_TLS_URL: process.env.REDIS_TLS_URL,
-    REDIS_PASSWORD: process.env.REDIS_PASSWORD,
-  },
-
   // The name of all our collections in the database
   DB_COLLECTION: {
     USER: "USER",
-    CONVERSATION: "CONVERSATION"
+    
   },
 
   // Investment constants
@@ -50,7 +34,6 @@ const constants = {
     INVALID_PASSWORD: "Invalid password",
     PASSWORD_MISMATCH: "Password mismatch detected",
     PASSWORD_RESET_SUCCESS: "Password reset successful",
-    FILE_NOT_FOUND: "File not found",
   },
 }
 
