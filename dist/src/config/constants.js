@@ -6,7 +6,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 var dotenv_1 = __importDefault(require("dotenv"));
 dotenv_1.default.config();
 var constants = {
-    APP_NAME: "Minx",
+    APP_NAME: "SCAMP-C6-Assessment",
     PORT: process.env.PORT,
     DATABASE_URI: process.env.DATABASE_URI,
     JWT_PUBLIC_KEY: process.env.JWT_PUBLIC_KEY,
