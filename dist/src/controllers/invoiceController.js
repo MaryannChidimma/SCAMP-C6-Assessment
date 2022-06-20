@@ -41,43 +41,40 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 var appResponse_1 = __importDefault(require("../../lib/appResponse"));
 var constants_1 = __importDefault(require("../config/constants"));
-var dataCrypto_1 = require("../utility/dataCrypto");
-var userService_1 = __importDefault(require("../services/userService"));
+var invoiceService_1 = __importDefault(require("../services/invoiceService"));
 var UserCtrl = /** @class */ (function () {
     function UserCtrl() {
     }
-    UserCtrl.prototype.addUser = function (req, res) {
+    UserCtrl.prototype.createInvoice = function (req, res) {
         return __awaiter(this, void 0, void 0, function () {
-            var userData, _a, response;
+            var _a, fullname, address, email, response;
             return __generator(this, function (_b) {
                 switch (_b.label) {
                     case 0:
-                        userData = req.body;
-                        _a = userData;
-                        return [4 /*yield*/, (0, dataCrypto_1.passwordHash)(userData.password)];
+                        _a = req.user, fullname = _a.fullname, address = _a.address, email = _a.email;
+                        req.body.user = {
+                            name: fullname,
+                            address: address,
+                            email: email
+                        };
+                        return [4 /*yield*/, invoiceService_1.default.createInvoice(req.body)];
                     case 1:
-                        _a.password = _b.sent();
-                        console.log(userData.password);
-                        return [4 /*yield*/, userService_1.default.addUser(userData)];
-                    case 2:
                         response = _b.sent();
-                        res.status(201).send((0, appResponse_1.default)(constants_1.default.MESSAGES.USER_CREATED, response));
+                        res.status(201).send((0, appResponse_1.default)(constants_1.default.MESSAGES.CREATED, response));
                         return [2 /*return*/];
                 }
             });
         });
     };
-    UserCtrl.prototype.loginUser = function (req, res) {
+    UserCtrl.prototype.getAll = function (req, res) {
         return __awaiter(this, void 0, void 0, function () {
-            var loginDetails, response;
+            var response;
             return __generator(this, function (_a) {
                 switch (_a.label) {
-                    case 0:
-                        loginDetails = req.body;
-                        return [4 /*yield*/, userService_1.default.login(loginDetails)];
+                    case 0: return [4 /*yield*/, invoiceService_1.default.getAllInvoice()];
                     case 1:
                         response = _a.sent();
-                        res.status(200).send((0, appResponse_1.default)(constants_1.default.MESSAGES.USER_LOGGED, response));
+                        res.status(200).send((0, appResponse_1.default)(constants_1.default.MESSAGES.FETCHED, response));
                         return [2 /*return*/];
                 }
             });

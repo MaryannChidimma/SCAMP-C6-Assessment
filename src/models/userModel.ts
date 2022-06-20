@@ -23,6 +23,14 @@ const UserSchema = new Schema<AUser>(
       type: String,
       default: "",
     },
+    role: {
+      type: String,
+      default: "user",
+    }, 
+    address: {
+      type: String,
+      required: true
+    },
     avatar: {
       url: {
         type: String,

@@ -4,6 +4,7 @@ const router = express.Router();
 import { Validator } from "../validators";
 import {
   AddUserSchema,
+  LoginSchema
 } from "../validators/userSchema";
 
 
@@ -14,7 +15,11 @@ function userRouter() {
     userController.addUser
   );
 
- 
+  router.post(
+    "/login",
+    Validator(LoginSchema, "body"),
+    userController.loginUser
+  );
   return router;
 }
 

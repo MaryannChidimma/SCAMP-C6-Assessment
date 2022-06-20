@@ -7,6 +7,9 @@ interface AUser extends Document {
   password: string;
   email: string;
   about: string;
+  role: "user" | "client";
+  address: string;
+  _doc?: any;
   avatar: AImage;
 }
 

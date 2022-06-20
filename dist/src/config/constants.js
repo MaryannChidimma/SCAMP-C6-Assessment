@@ -14,6 +14,7 @@ var constants = {
     // The name of all our collections in the database
     DB_COLLECTION: {
         USER: "USER",
+        INVOICE: "INVOICE",
     },
     // Investment constants
     MAX_NO_OF_REF_PER_PLAN: 6,

@@ -39,50 +39,63 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-var appResponse_1 = __importDefault(require("../../lib/appResponse"));
-var constants_1 = __importDefault(require("../config/constants"));
-var dataCrypto_1 = require("../utility/dataCrypto");
+exports.hasRole = exports.authenticate = void 0;
+var appError_1 = require("../../lib/appError");
 var userService_1 = __importDefault(require("../services/userService"));
-var UserCtrl = /** @class */ (function () {
-    function UserCtrl() {
-    }
-    UserCtrl.prototype.addUser = function (req, res) {
-        return __awaiter(this, void 0, void 0, function () {
-            var userData, _a, response;
-            return __generator(this, function (_b) {
-                switch (_b.label) {
-                    case 0:
-                        userData = req.body;
-                        _a = userData;
-                        return [4 /*yield*/, (0, dataCrypto_1.passwordHash)(userData.password)];
-                    case 1:
-                        _a.password = _b.sent();
-                        console.log(userData.password);
-                        return [4 /*yield*/, userService_1.default.addUser(userData)];
-                    case 2:
-                        response = _b.sent();
-                        res.status(201).send((0, appResponse_1.default)(constants_1.default.MESSAGES.USER_CREATED, response));
-                        return [2 /*return*/];
-                }
-            });
+var dataCrypto_1 = require("../utility/dataCrypto");
+var getToken = function (req) { return req.headers["x-auth-token"]; };
+var authenticate = function (req, res, next) {
+    return __awaiter(this, void 0, void 0, function () {
+        var token, decoded, user, error_1, errors;
+        return __generator(this, function (_a) {
+            switch (_a.label) {
+                case 0:
+                    token = getToken(req);
+                    if (!token)
+                        throw new appError_1.UnAuthorizedError("No token");
+                    if (typeof token !== "string")
+                        throw new appError_1.UnAuthorizedError("Supply with a token");
+                    _a.label = 1;
+                case 1:
+                    _a.trys.push([1, 4, , 5]);
+                    return [4 /*yield*/, (0, dataCrypto_1.decryptData)(token)];
+                case 2:
+                    decoded = _a.sent();
+                    return [4 /*yield*/, userService_1.default.getUserById(decoded.id)];
+                case 3:
+                    user = _a.sent();
+                    if (!user) {
+                        throw new appError_1.UnAuthorizedError("User is not authorized");
+                    }
+                    req.user = user;
+                    next();
+                    return [3 /*break*/, 5];
+                case 4:
+                    error_1 = _a.sent();
+                    errors = ["TokenExpiredError", "NotBeforeError", "JsonWebTokenError"];
+                    if (errors.includes(error_1 === null || error_1 === void 0 ? void 0 : error_1.name)) {
+                        throw new appError_1.UnAuthorizedError("Please authenticate", 411);
+                    }
+                    next(error_1);
+                    return [3 /*break*/, 5];
+                case 5: return [2 /*return*/];
+            }
         });
-    };
-    UserCtrl.prototype.loginUser = function (req, res) {
-        return __awaiter(this, void 0, void 0, function () {
-            var loginDetails, response;
-            return __generator(this, function (_a) {
-                switch (_a.label) {
-                    case 0:
-                        loginDetails = req.body;
-                        return [4 /*yield*/, userService_1.default.login(loginDetails)];
-                    case 1:
-                        response = _a.sent();
-                        res.status(200).send((0, appResponse_1.default)(constants_1.default.MESSAGES.USER_LOGGED, response));
-                        return [2 /*return*/];
-                }
-            });
+    });
+};
+exports.authenticate = authenticate;
+var hasRole = function (roles) {
+    if (roles === void 0) { roles = []; }
+    return function (req, res, next) { return __awaiter(void 0, void 0, void 0, function () {
+        var _a;
+        return __generator(this, function (_b) {
+            if (!roles.length)
+                throw new appError_1.UnAuthorizedError("Access denied");
+            if (!roles.includes((_a = req.user) === null || _a === void 0 ? void 0 : _a.role))
+                throw new appError_1.BadRequestError("Access Denied");
+            next();
+            return [2 /*return*/];
         });
-    };
-    return UserCtrl;
-}());
-exports.default = new UserCtrl();
+    }); };
+};
+exports.hasRole = hasRole;

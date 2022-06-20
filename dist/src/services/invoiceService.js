@@ -1,15 +1,4 @@
 "use strict";
-var __assign = (this && this.__assign) || function () {
-    __assign = Object.assign || function(t) {
-        for (var s, i = 1, n = arguments.length; i < n; i++) {
-            s = arguments[i];
-            for (var p in s) if (Object.prototype.hasOwnProperty.call(s, p))
-                t[p] = s[p];
-        }
-        return t;
-    };
-    return __assign.apply(this, arguments);
-};
 var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
     function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
     return new (P || (P = Promise))(function (resolve, reject) {
@@ -50,73 +39,34 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-var appError_1 = require("../../lib/appError");
-var userModel_1 = __importDefault(require("../models/userModel"));
+var invoiceModel_1 = __importDefault(require("../models/invoiceModel"));
 var constants_1 = __importDefault(require("../config/constants"));
-var dataCrypto_1 = require("../utility/dataCrypto");
-var bcrypt_1 = __importDefault(require("bcrypt"));
 var MESSAGES = constants_1.default.MESSAGES;
 var UserServices = /** @class */ (function () {
     function UserServices() {
     }
-    UserServices.prototype.addUser = function (data) {
+    UserServices.prototype.createInvoice = function (data) {
         return __awaiter(this, void 0, void 0, function () {
-            var newUser, existingUser, token, dataToSend;
+            var newUser;
             return __generator(this, function (_a) {
                 switch (_a.label) {
-                    case 0: return [4 /*yield*/, userModel_1.default.findOne({ email: data.email })];
+                    case 0: return [4 /*yield*/, invoiceModel_1.default.create(data)];
                     case 1:
-                        existingUser = _a.sent();
-                        if (existingUser)
-                            throw new appError_1.NotFoundError(MESSAGES.USER_EXIST);
-                        return [4 /*yield*/, userModel_1.default.create(data)];
-                    case 2:
                         newUser = _a.sent();
-                        token = (0, dataCrypto_1.encryptData)({ id: data._id, email: data.email, });
-                        console.log(token);
-                        dataToSend = __assign(__assign({}, newUser._doc), { token: token });
-                        // Delete the password field before sending to the backend
-                        delete dataToSend.password;
-                        return [2 /*return*/, dataToSend];
+                        return [2 /*return*/, newUser];
                 }
             });
         });
     };
-    UserServices.prototype.login = function (loginDetails) {
+    UserServices.prototype.getAllInvoice = function () {
         return __awaiter(this, void 0, void 0, function () {
-            var existingUser, isMatched, token, dataToSend;
+            var invoices;
             return __generator(this, function (_a) {
                 switch (_a.label) {
-                    case 0: return [4 /*yield*/, userModel_1.default.findOne({
-                            email: loginDetails.email,
-                        })];
+                    case 0: return [4 /*yield*/, invoiceModel_1.default.find()];
                     case 1:
-                        existingUser = _a.sent();
-                        if (!existingUser)
-                            throw new appError_1.NotFoundError(MESSAGES.INVALID_CREDENTIALS);
-                        return [4 /*yield*/, bcrypt_1.default.compare(loginDetails.password, existingUser.password)];
-                    case 2:
-                        isMatched = _a.sent();
-                        if (!isMatched)
-                            throw new appError_1.BadRequestError(MESSAGES.INVALID_CREDENTIALS);
-                        token = (0, dataCrypto_1.encryptData)({
-                            id: existingUser._id,
-                            email: existingUser.email,
-                            role: existingUser.role,
-                        }, constants_1.default.JWT_USER_LOGIN_EXPIRATION);
-                        dataToSend = __assign(__assign({}, existingUser._doc), { token: token });
-                        delete dataToSend.password;
-                        return [2 /*return*/, dataToSend];
-                }
-            });
-        });
-    };
-    UserServices.prototype.getUserById = function (id) {
-        return __awaiter(this, void 0, void 0, function () {
-            return __generator(this, function (_a) {
-                switch (_a.label) {
-                    case 0: return [4 /*yield*/, userModel_1.default.findById(id).lean()];
-                    case 1: return [2 /*return*/, _a.sent()];
+                        invoices = _a.sent();
+                        return [2 /*return*/, invoices];
                 }
             });
         });

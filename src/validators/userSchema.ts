@@ -7,11 +7,16 @@ const AddUserSchema = Joi.object({
   username: Joi.string().min(3),
   email: Joi.string().lowercase().email().required(),
   password: Joi.string().min(6).required(),
+  address: Joi.string().min(6).required(),
 
 });
 
+const LoginSchema = Joi.object({
+  email: Joi.string().lowercase().email().required(),
+  password: Joi.string().min(6).required(),
 
+});
 export {
   AddUserSchema,
-  
+  LoginSchema
 };

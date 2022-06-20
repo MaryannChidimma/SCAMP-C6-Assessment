@@ -10,6 +10,7 @@ const constants = {
   // The name of all our collections in the database
   DB_COLLECTION: {
     USER: "USER",
+    INVOICE: "INVOICE",
     
   },
 

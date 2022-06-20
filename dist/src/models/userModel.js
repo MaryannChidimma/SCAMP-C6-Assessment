@@ -25,6 +25,14 @@ var UserSchema = new mongoose_1.Schema({
         type: String,
         default: "",
     },
+    role: {
+        type: String,
+        default: "user",
+    },
+    address: {
+        type: String,
+        required: true
+    },
     avatar: {
         url: {
             type: String,
