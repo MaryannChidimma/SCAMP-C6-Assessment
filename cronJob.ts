@@ -3,11 +3,9 @@ import Invoice from "./src/models/invoiceModel"
 
 import moment from "moment";
 import   sendMail from "./src/utility/emails"
-const sequelize = require("sequelize");
-const Op = sequelize.Op;
 
-//this Job sends email to clients whose payment has passed due date every day
-cron.schedule("* * * ", async () => {
+//this Job sends email to clients whose payment has passed due date twice daily, by 12pm and 6pm
+cron.schedule("00 12, 18 * * *", async () => {
   let date = moment();
   date.toISOString();
 
