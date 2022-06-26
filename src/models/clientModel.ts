@@ -1,8 +1,8 @@
 import { Schema, model, Model } from "mongoose";
-import { AUser } from "../interfaces/UserInterfaces";
+import  { AClient} from "../interfaces/ClientInterfaces";
 import constants from "../config/constants";
 
-const UserSchema = new Schema<AUser>(
+const ClientSchema = new Schema<AClient>(
   {
     fullname: {
       type: String,
@@ -19,30 +19,15 @@ const UserSchema = new Schema<AUser>(
     password: {
       type: String,
     },
-    about: {
-      type: String,
-      default: "",
-    },
     address: {
       type: String,
       required: true
-    },
-
-    avatar: {
-      url: {
-        type: String,
-        default: "",
-      },
-      public_id: {
-        type: String,
-        default: "",
-      },
     },
   },
   { timestamps: true }
 );
 
 
-const UserModel: Model<AUser> = model(constants.DB_COLLECTION.USER, UserSchema);
+const ClientModel: Model<AClient> = model(constants.DB_COLLECTION.USER, ClientSchema);
 
-export default UserModel;
+export default ClientModel;

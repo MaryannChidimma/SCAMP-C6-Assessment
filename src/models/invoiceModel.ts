@@ -5,8 +5,7 @@ import userRouter from "../routes/userRoute";
 
 const InvoiceSchema = new Schema<Invoice>(
   {
-    client: {
-        name: {
+        clientName: {
             type: String,
             required: true
         },
@@ -17,37 +16,23 @@ const InvoiceSchema = new Schema<Invoice>(
             trim: true,
             lowercase: true,
         },
-        address: {
-            type: String,
-            required: true
-        },
-    },
-    user: {
-        name: {
-            type: String,
-            required: true
-        },
-        email: {
-            type: String,
-            unique: true,
-            required: true,
-            trim: true,
-            lowercase: true,
-        },
-        address: {
-            type: String,
-            required: true
-        },
-    },
+      
+    services: [
+        {
+        type: Schema.Types.ObjectId,
+        ref: constants.DB_COLLECTION.SERVICE,
+        required: true,
+         }
+    ],
     description: {
         type: String,
         required: true
     },
 
-    dueDate: {
-        type: Date,
-        required: true
-    }
+    amount: {
+        type: Number,
+        required: true 
+    },
   },
   { timestamps: true }
 );

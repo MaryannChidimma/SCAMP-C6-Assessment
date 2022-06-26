@@ -2,25 +2,13 @@ import { Document, Schema } from "mongoose";
 import { AImage,  } from "./UtilInterfaces";
 
 interface Invoice extends Document {
-  client: Client;
-  user: User;
+  clientName: string;
+  email: string;
+  services: Schema.Types.ObjectId[]
   description: string;
   dueDate: Date;
+  amount: number
 }
-
-interface Client {
-    name: string;
-    address: string;
-    email: string;
-}
-
-interface User {
-    name: string;
-    address: string;
-    email: string;
-}
-
-
 
 export {
     Invoice,

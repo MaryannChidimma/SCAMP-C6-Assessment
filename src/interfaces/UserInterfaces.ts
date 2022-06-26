@@ -8,6 +8,7 @@ interface AUser extends Document {
   email: string;
   about: string;
   role: "user" | "client";
+  services: object[]
   address: string;
   _doc?: any;
   avatar: AImage;
@@ -18,9 +19,15 @@ interface UserLogin {
   email: string;
   password: string;
 }
+interface IService {
+  user: Schema.Types.ObjectId ;
+  service: object;
+  price : number;
+}
 
 
 export {
   AUser,
   UserLogin,
+  IService,
 };

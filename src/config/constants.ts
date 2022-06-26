@@ -6,11 +6,15 @@ const constants = {
   DATABASE_URI: process.env.DATABASE_URI,
   JWT_PUBLIC_KEY: process.env.JWT_PUBLIC_KEY,
   JWT_USER_LOGIN_EXPIRATION: 2,
+  PAYSTACK_TEST_SECRET_KEY: process.env.PAYSTACK_SECRET_KEY,
   
   // The name of all our collections in the database
   DB_COLLECTION: {
     USER: "USER",
     INVOICE: "INVOICE",
+    CLIENT: "CLIENT",
+    REQUEST_SERVICE: "REQUEST_SERVICE",
+    SERVICE: "SERVICE"
     
   },
 
